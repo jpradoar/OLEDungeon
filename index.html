@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>RPG Oracle</title>
+<style>
+  body {
+    color: white;
+    background-color: #242424;
+  }
+  .input-text-short {
+    width: 30px;
+  }
+  .button {
+    background-color: #4CAF50; 
+    color: white;
+    border-radius: 5px;
+  }
+  .log {
+    width: 300px;
+    height: 300px;
+  }
+  .notas {
+    width: 200px;
+    height: 300px;
+  }
+  .input-text-long {
+    width: 110px;
+  }
+</style>
+
+<script type="text/javascript">
+function displayText(text) {
+    const log = document.getElementById("log");
+    log.value += text + "\n";
+    log.scrollTop = log.scrollHeight; // Auto-scroll
+}
+
+function GetRandom(max) {
+    return Math.floor(Math.random() * max) +1; // Genera un número aleatorio entre 1 y max inclusive
+}
+function GetRandomStats(max) {
+    return Math.floor(Math.random() * max); // Genera un número aleatorio entre 0 y max inclusive
+}
+
+function roll1dX(max) {
+    let result = Math.floor(Math.random() * max) + 1; // Genera un número aleatorio entre 1 y max inclusive
+    displayText("🎲 (1d" + max + ") = " + result);
+}
+
+function GetRandomButton(owner_number) {
+    ButtonDice = Math.floor(Math.random() * 7); 
+
+    if (ButtonDice == 0){
+      ButtonDice = "Fail";
+    }
+    if (owner_number == 1){
+      document.getElementById("ButtonDiceUser").value = ButtonDice;
+      displayText("You     = 🗡️ + 🎲("+ButtonDice+") - 🛡️Monster")
+    }
+    if (owner_number == 2){
+      document.getElementById("ButtonDiceMonster").value = ButtonDice;
+      displayText("Monster = 🗡️ + 🎲("+ButtonDice+") - 🛡️You")
+    }
+    if (owner_number == 3){
+      document.getElementById("ButtonDiceMonster2").value = ButtonDice;
+      displayText("Monster = 🗡️ + 🎲("+ButtonDice+") - 🛡️You")
+    }    
+    if (owner_number == 4){
+      document.getElementById("ButtonDiceUser").value = "-";
+      document.getElementById("ButtonDiceMonster").value = "-";
+      document.getElementById("ButtonDiceMonster2").value = "-";
+    }
+}
+
+
+function ShowHelp(){ 
+    displayText("HELP: ")
+}
+function ShowWelcome(){ 
+    displayText("Once again you, The great Barbarian, have been called to clear the dungeon, kill all monsters and rescue the four magic gems. Go ahead and enter to the dungeon.")
+    displayText("...Good luck!")
+    displayText("---------------------------")
+    displayText(" ")
+}
+
+
+function WhatsOnRoom(){
+    let oraculo = [
+      "- Room is empty.",
+      "- Room is empty.",
+      "- Trap",      
+      "- Trap \n- Monster",
+      "- Trap \n- Camp\n- Source",
+      "- Trap \n- Chest",  
+      "- Monster",
+      "- Monster\n- Chest",
+      "- Monster\n- Camp",  
+      "- Monster\n- Source",  
+      "- Monster\n- Sanctuary",
+      "- Source",
+      "- Source",
+      "- Chest",
+      "- Chest",
+      "- Chest",
+      "- Camp",
+      "- Camp\n- Monster", 
+      "- Source\n- Sanctuary",
+      "- Merchant",
+      "- Item",
+      "- Human skeletons",
+      "- Human Remains",
+      "- Animal Bones and Remains",
+    ];
+    displayText("(What's on room): ");
+    displayText(oraculo[GetRandom(oraculo.length)])
+}
+
+function ThingsinRoom(){
+    let oraculo = ["1","2","3"];
+    displayText("(You see): " + oraculo[GetRandom(oraculo.length)] +" things in the room");
+}
+
+
+function ShowTrap(){
+    let oraculo = ["🕳 hole (-1HP)","🎯 arrow trap (-1HP)","🔪 flying knives (-1HP)"];
+    displayText("(Trap): " + oraculo[GetRandomStats(oraculo.length)]);
+}
+
+
+function ShowMonster(monster_number){
+    let oraculo = [
+        "MIMIC",      
+        "GOBLIN",
+        "SKELETON",
+        "ORC",
+        "BIG SPIDER",
+        "BANDIT",
+        "GARGOLA",
+        "RATS",
+        "WOLF",
+        ];
+    let m_drop = [
+        "🧪anti-poison potion", 
+        "🗝️ Key ", 
+        "⚗️ health potion",
+        "🌱 medicinal plant",
+        "🌾 medicinal plant",
+        "🌿 medicinal plant",
+        "x","x","x","x","x","x","x","x","x","x","x",
+        ];
+    monster_type = oraculo[GetRandom(oraculo.length)]
+    /*drop = m_drop[GetRandomStats(m_drop.length)];*/
+    monster_hp = GetRandom(6)
+    monster_at = GetRandom(6)
+    monster_df = GetRandom(6)
+    monster_coin = GetRandom(2)
+    monster_exp = GetRandom(5)
+    monster_drop = m_drop[GetRandomStats(m_drop.length)];
+
+    displayText("\n(MONSTER): " + monster_type);
+    displayText("(STATS): |HP:"+ monster_hp+"|AT:"+ monster_at+"|DF:"+ monster_df+"|Coin:"+ monster_coin+"|Exp:"+ monster_exp)
+
+    if (monster_number == 1){
+        document.getElementById("monster_type").innerText = monster_type;
+        document.getElementById("monster_hp").value = monster_hp;
+        document.getElementById("monster_at").value = monster_at;
+        document.getElementById("monster_df").value = monster_df;
+        document.getElementById("monster_coin").value = monster_df;
+        document.getElementById("monster_coin").value = monster_coin;
+        document.getElementById("monster_exp").value = monster_exp;
+        if ( monster_drop != "x"){
+            displayText("|Drop: "+monster_drop)
+            document.getElementById("monster_drop").value = monster_drop;
+        }else{
+          document.getElementById("monster_drop").value = " ";
+        }
+    }
+    if (monster_number == 2){
+        document.getElementById("monster_type").innerText = monster_type;
+        document.getElementById("monster_hp2").value = monster_hp;
+        document.getElementById("monster_at2").value = monster_at;
+        document.getElementById("monster_df2").value = monster_df;
+        document.getElementById("monster_coin2").value = monster_df;
+        document.getElementById("monster_coin2").value = monster_coin;
+        document.getElementById("monster_exp2").value = monster_exp;
+        if ( monster_drop != "x"){
+            displayText("|Drop: "+monster_drop)
+            document.getElementById("monster_drop2").value = monster_drop;
+        }else{
+          document.getElementById("monster_drop2").value = " ";
+        }
+    }    
+}
+
+
+function incrementValue(inputId) {
+  let input = document.getElementById(inputId);
+  input.value = parseInt(input.value) + 1;
+}
+
+function decrementValue(inputId) {
+  let input = document.getElementById(inputId);
+  input.value = parseInt(input.value) - 1;
+}
+
+function separator(){ 
+    displayText("--------------------------------")
+}
+
+function DoorStatus(){ 
+    let oraculo = [
+        "is opened",      
+        "is opened",
+        "is opened",
+        "is closed. You need a 🗝️ to open it",
+        ];
+    displayText("(Door): " + oraculo[GetRandomStats(oraculo.length)]);
+
+}
+
+let objetosUnicosDisponibles = [
+    "💎 GREEN (Quest)",
+    "💎 BLUE (Quest)",
+    "💎 RED (Quest)",
+    "💎 WHITE (Quest)",
+    "📦 BOX (Quest)",
+    "📩 LETTER (Quest)",
+    "👑 CROWN (Quest)",    
+    "🗡️ Sword (🗡️+2) (Uniq)",
+    "🪓 Axe (🗡️+3) (Uniq)",    
+    "🔰 Big Shield (🛡️+2) (Uniq)",
+    "🛡️ Small Shield (🛡️+1) (Uniq)",    
+    "💀 SKULL (Uniq)",
+    "💍 (🧥+1) (Common)",
+    "💍 (🗡️+1) (Common)",
+    "🥾 (🧥+1) (Common)",
+    "🥾 (🧥+2) (Uniq)",
+    "📿 (🧥+1) (Common)",
+    "📿 (🗡️+1) (Common)",
+    "🪖 (🧥+1) (Common)",
+    "🪖 (🧥+2) (Uniq)",
+    "📜 (InstaKill enemy) - (use=1)",
+];
+let objetosUnicosEncontrados = [];
+function encontrarObjeto() {
+    if (objetosUnicosDisponibles.length > 0) {
+        let index = GetRandomStats(objetosUnicosDisponibles.length);
+        let objeto = objetosUnicosDisponibles.splice(index, 1)[0];
+        objetosUnicosEncontrados.push(objeto);
+        displayText("(Found item): " + objeto);
+    } else {
+        displayText("No hay más objetos disponibles para encontrar.");
+    }
+}
+
+function listarObjetos() {
+    displayText("Found items: " + objetosUnicosEncontrados.join(", "));
+}
+
+
+
+function OpenRoom(){
+    let oraculo = [
+`
+    _____| |_____    
+   |             |   
+   |             |__ 
+ __|              __ 
+ __              |   
+   |             |   
+   |_____   _____|   
+         | |         
+`,
+`
+__________       | | 
+________  |      | | 
+        | |______| | 
+        |  ________| 
+        | |          
+        | |__________
+        |  __________
+        | |          
+`,
+`
+         | |         
+         | |         
+         | |         
+_________| |_________
+_________   _________
+         | |         
+         | |         
+         | |         
+`,
+`   
+     _________       
+    |         |      
+    |         |      
+    |         |      
+    |         |      
+    |         |      
+    |_____   _|      
+          | |        
+`,
+`
+    _____________    
+   |             |   
+   |             |__ 
+ __|              __ 
+ __              |   
+   |             |   
+   |_____   _____|   
+         | |         
+`,
+`                     
+ __________          
+ ________  |         
+         | |         
+         | |         
+         | |_________
+         |  _________
+         | |         
+`,
+`
+
+     ____| |__       
+    |  _____  |      
+    | |     | |      
+    | |     | |      
+    | |     | |      
+ ___| |     | |______
+|  ___|     |________
+| |                  
+`,
+`
+    _____________    
+   |             |   
+   |             |__ 
+   |              __ 
+   |             |   
+   |             |   
+   |_____   _____|   
+         | |         
+`,
+`
+    _____________    
+___|             |   
+___              |   
+   |             |   
+   |             |   
+   |             |   
+   |_____   _____|   
+         | |         
+`,
+`                 
+                     
+                     
+       _______       
+      |       |      
+      |       |      
+      |__   __|      
+         | |         
+`,
+`
+
+    _____| |_____    
+   |             |   
+   |     ___     |   
+   |    |   |    |   
+   |    |___|    |   
+   |             |   
+   |_____   _____|   
+         | |         
+`,
+`                    
+___________         
+_________  |        
+         | |        
+         | |        
+         | |        
+         | |        
+         | |        
+`,
+`
+       _______       
+      |  ___  |      
+______| |   | |______
+______  |   |  ______
+      | |___| |      
+      |__   __|      
+         | |         
+`,
+`
+      _________      
+     |         |     
+     |  ][ ][  |     
+     |    _    |     
+     |___|#|___|     
+       |     |       
+       |_   _|       
+         | |         
+`,
+`
+  _________________
+ |                 |
+ |     ][   ][     |
+ |                 |
+ |     ][   ][     |
+ |___           ___|
+     |         |    
+     |___| |___| 
+`,
+`
+
+    _____| |       
+   |       |       
+   |       |______ 
+ __|        _|__  |
+ __        |  __| |
+   |       | |    |
+   |_____  | |    |
+         | | |____|
+`,
+`
+
+    _____| |        
+   |  _____|  ______
+   | |       / _____
+___| |::::::/ /     
+___  |     / /      
+   | |____/ /       
+   |_____  /        
+         | |        
+`,
+`
+
+  _______| |________ 
+ |  ______________  |
+ | |     |   |    | |
+_| |     |   |    | |
+_  |  _  |  _|  _ | |
+ | |_| |_|_| |_| || |
+ |                  |
+ |__________________|
+`,
+    ];
+    displayText("(Room opened): " + oraculo[GetRandom(oraculo.length)]);
+    displayText("---------------------------")
+    WhatsOnRoom()
+    displayText("---------------------------")
+}
+
+
+function SaveState() {
+    const logContent = document.getElementById("log").value;
+    const notasContent = document.getElementById("notas").value;
+    const state = {
+        log: logContent,
+        notas: notasContent
+    };
+    const stateBlob = new Blob([JSON.stringify(state)], { type: "application/json" });
+    const url = URL.createObjectURL(stateBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "game_state.json";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function LoadState(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const state = JSON.parse(e.target.result);
+        document.getElementById("log").value = state.log;
+        document.getElementById("notas").value = state.notas;
+    };
+    reader.readAsText(file);
+}
+
+</script>
+</head>
+<body onload="ShowWelcome()">
+            <table border="1">
+              <tr>
+                <td colspan="2" align="center">Inventory and backpack</td>
+                <td> ـﮩﮩ٨ـ🫀ﮩ٨ـﮩ</td>
+                <td>Monster: <span id="monster_type"></span></td>
+                <!-- <td>Monster (2)</td> -->
+              </tr>
+              <tr>
+                <td>
+                <!--<button onclick="incrementValue('user_ring')">+</button>
+                    <input id="user_ring" type="number" class="input-text-short" value="0"> 
+                    <button onclick="decrementValue('user_ring')">-</button>💍
+                  -->
+                 <select name="user_ring" id="user_ring">
+                   <option value="#">Empty</option>
+                   <option value="#">💍 (🧥+1)</option>
+                   <option value="#">💍 (🗡️+1)</option>
+                </select> 💍
+                </td>
+                <td>
+                  <!--🪖 <button onclick="incrementValue('user_helmet')">+</button>
+                    <input id="user_helmet" type="number" class="input-text-short" value="0">
+                    <button onclick="decrementValue('user_helmet')">-</button>
+                  -->
+                  🪖 <select name="user_helmet" id="user_helmet">
+                   <option value="#">None</option>
+                   <option value="#">🪖 (🧥+1)</option>
+                   <option value="#">🪖 (🧥+2)</option>
+                </select>
+                </td>
+                <td align="center"> 
+                  <select name="health_status" id="health_status">
+                   <option value="healthy"> 🫀 Healthy</option>
+                   <option value="Poisoned"> 🦠 Poisoned </option>
+                   <option value="Poisoned"> 💛 -1HP</option>
+                   <option value="Poisoned"> 🧡 -2HP</option>
+                   <option value="Poisoned"> 💜 -3HP</option>
+                   <option value="Poisoned"> 🖤 -4HP</option>
+                   <option value="Poisoned"> 💀 -5HP </option>
+                </select> 
+                </td>
+                <!-- <td>❤️<button onclick="incrementValue('monster_hp')">+</button>
+                  <input id="monster_hp" type="number" class="input-text-short" value="0" >
+                  <button onclick="decrementValue('monster_hp')">-</button>
+                </td>-->
+                <td>❤️ <button onclick="incrementValue('monster_hp2')">+</button>
+                  <input id="monster_hp2" type="number" class="input-text-short" value="0">
+                   <button onclick="decrementValue('monster_hp2')">-</button>
+                </td>
+              </tr>
+              <tr>
+                <td><button onclick="incrementValue('user_weapon')">+</button>
+                    <input id="user_weapon" type="number" class="input-text-short" value="1">
+                    <button onclick="decrementValue('user_weapon')">-</button> 🗡️ 
+                  </td>
+                <td>🧥
+                  <button onclick="incrementValue('user_armor')">+</button>
+                  <input id="user_armor" type="number" class="input-text-short" value="1">
+                  <button onclick="decrementValue('user_armor')">-</button>
+                </td>
+               
+                <td>❤️ <button onclick="incrementValue('player_hp')">+</button>
+                       <input id="player_hp" type="number" class="input-text-short" value="12">
+                       <button onclick="decrementValue('player_hp')">-</button>
+                     </td>
+                <!-- <td>⚔️ <button onclick="incrementValue('monster_at')">+</button>
+                        <input id="monster_at" type="number" class="input-text-short" value="0">
+                        <button onclick="decrementValue('monster_at')">-</button>
+                </td>-->
+                <td>⚔️ <button onclick="incrementValue('monster_at2')">+</button>
+                        <input id="monster_at2" type="number" class="input-text-short" value="0">
+                        <button onclick="decrementValue('monster_at2')">-</button>
+                      </td>
+              </tr>
+              <tr>
+                <td> 
+                  <button onclick="incrementValue('user_sheld')">+</button>
+                  <input id="user_sheld" type="number" class="input-text-short" value="0"> 
+                  <button onclick="decrementValue('user_sheld')">-</button>🛡️
+                </td>
+                <td>
+                  <!--🥾
+                  <button onclick="incrementValue('user_boat')">+</button>
+                  <input id="user_boat" type="number" class="input-text-short" value="0">
+                  <button onclick="decrementValue('user_boat')">-</button>
+                -->
+                🥾 <select name="user_boat" id="user_boat">
+                   <option value="#">Common</option>
+                   <option value="#">🥾 (🧥+1)</option>
+                   <option value="#">🥾 (🧥+2)</option>
+                </select>
+                </td>
+                <td>🍗 <button onclick="incrementValue('food')">+</button>
+                       <input id="food" type="number" class="input-text-short" value="7">
+                       <button onclick="decrementValue('food')">-</button>
+                </td>
+                <!-- <td>🛡️ 
+                  <button onclick="incrementValue('monster_df')">+</button>
+                  <input id="monster_df" type="number" class="input-text-short">
+                  <button onclick="decrementValue('monster_df')">-</button>
+                </td>-->
+                <td>
+                  🛡️ <button onclick="incrementValue('monster_df2')">+</button>
+                  <input id="monster_df2" type="number" class="input-text-short" value="0"> 
+                  <button onclick="decrementValue('monster_df2')">-</button>
+                </td> 
+              </tr>
+              <tr>
+                <td>
+                  <!--<button onclick="incrementValue('user_collar')">+</button>
+                  <input id="user_collar" type="number" class="input-text-short" value="0">
+                  <button onclick="decrementValue('user_collar')">-</button>📿
+                -->
+                <select name="user_collar" id="user_collar">
+                   <option value="#">Empty</option>
+                   <option value="#">📿 (🧥+1)</option>
+                   <option value="#">📿 (🗡️+1)</option>
+                </select> 📿
+              </td>
+                <td> 
+                  🗝️ <button onclick="incrementValue('user_keys')">+</button>
+                  <input id="user_keys" type="number" class="input-text-short" value="0">
+                  <button onclick="decrementValue('user_keys')">-</button>
+                </td>
+                <td>🪙 <button onclick="incrementValue('user_gold')">+</button>
+                  <input id="user_gold" type="number" class="input-text-short"value="0">
+                  <button onclick="decrementValue('user_gold')">-</button>
+                </td>
+                <!-- <td>🪙 <input id="monster_coin" type="number" class="input-text-short"></td>-->
+                <td>🪙 <input id="monster_coin2" type="number" class="input-text-short"></td>
+              </tr>
+              <tr>
+              <td><select name="drop_object1" id="drop_object1">
+                    <option value="#">🎒 Empty</option>
+                    <option value="#">💎 GREEN</option>
+                    <option value="#">💎 BLUE</option>
+                    <option value="#">💎 RED</option>
+                    <option value="#">💎 WHITE</option>
+                    <option value="#">📩 LETTER</option>
+                    <option value="#">💀 SKULL</option>
+                    <option value="#">👑 CROWN</option>
+                    <option value="#">🪓 Axe (🗡️+1)</option>
+                    <option value="#">🔰 Shield (🛡️+1)</option>
+                    <option value="#">📦 BOX</option>
+                    <option value="#">🧪anti-poison potion</option>
+                    <option value="#">🗝️ Key</option>
+                    <option value="#">⚗️ health potion</option>
+                    <option value="#">🌱 medicinal plant</option>
+                    <option value="#">🌾 medicinal plant</option>
+                    <option value="#">🌿 medicinal plant</option>
+                </select></td>
+                <td><select name="quest_object1" id="quest_object1">
+                    <option value="#">🎒 Empty</option>
+                    <option value="#">💎 GREEN</option>
+                    <option value="#">💎 BLUE</option>
+                    <option value="#">💎 RED</option>
+                    <option value="#">💎 WHITE</option>
+                    <option value="#">📩 LETTER</option>
+                    <option value="#">💀 SKULL</option>
+                    <option value="#">👑 CROWN</option>
+                    <option value="#">🪓 Axe (🗡️+1)</option>
+                    <option value="#">🔰 Shield (🛡️+1)</option>
+                    <option value="#">📦 BOX</option>
+                    <option value="#">🧪anti-poison potion</option>
+                    <option value="#">🗝️ Key</option>
+                    <option value="#">⚗️ health potion</option>
+                    <option value="#">🌱 medicinal plant</option>
+                    <option value="#">🌾 medicinal plant</option>
+                    <option value="#">🌿 medicinal plant</option>
+                  </select></td>
+                <td>
+                 🎖
+                  <button onclick="incrementValue('user_exp')">+</button>
+                  <input id="user_exp" type="number" class="input-text-short"value="0">
+                  <button onclick="decrementValue('user_exp')">-</button>
+              </td>
+                <!-- <td>🎖 <input id="monster_exp" type="number" class="input-text-short"></td>-->
+                <td>🎖 <input id="monster_exp2" type="number" class="input-text-short"></td>
+              </tr>
+              <tr>
+                <td><select name="drop_object1" id="drop_object1">
+                    <option value="#">🎒 Empty</option>
+                    <option value="#">💎 GREEN</option>
+                    <option value="#">💎 BLUE</option>
+                    <option value="#">💎 RED</option>
+                    <option value="#">💎 WHITE</option>
+                    <option value="#">📩 LETTER</option>
+                    <option value="#">💀 SKULL</option>
+                    <option value="#">👑 CROWN</option>
+                    <option value="#">🪓 Axe (🗡️+1)</option>
+                    <option value="#">🔰 Shield (🛡️+1)</option>
+                    <option value="#">📦 BOX</option>
+                    <option value="#">🧪anti-poison potion</option>
+                    <option value="#">🗝️ Key</option>
+                    <option value="#">⚗️ health potion</option>
+                    <option value="#">🌱 medicinal plant</option>
+                    <option value="#">🌾 medicinal plant</option>
+                    <option value="#">🌿 medicinal plant</option>
+                </select></td>
+                <td><select name="quest_object1" id="quest_object1">
+                    <option value="#">🎒 Empty</option>
+                    <option value="#">💎 GREEN</option>
+                    <option value="#">💎 BLUE</option>
+                    <option value="#">💎 RED</option>
+                    <option value="#">💎 WHITE</option>
+                    <option value="#">📩 LETTER</option>
+                    <option value="#">💀 SKULL</option>
+                    <option value="#">👑 CROWN</option>
+                    <option value="#">🪓 Axe (🗡️+1)</option>
+                    <option value="#">🔰 Shield (🛡️+1)</option>
+                    <option value="#">📦 BOX</option>
+                    <option value="#">🧪anti-poison potion</option>
+                    <option value="#">🗝️ Key</option>
+                    <option value="#">⚗️ health potion</option>
+                    <option value="#">🌱 medicinal plant</option>
+                    <option value="#">🌾 medicinal plant</option>
+                    <option value="#">🌿 medicinal plant</option>
+                  </select></td>
+                <td></td>
+                <!-- <td><input id="monster_drop" type="text" class="input-text-long"></td>-->
+                <td>🎁<input id="monster_drop2" type="text" class="input-text-long"></td>
+              </tr>
+              <tr>
+                <td><select name="drop_object1" id="drop_object1">
+                    <option value="#">🎒 Empty</option>
+                    <option value="#">💎 GREEN</option>
+                    <option value="#">💎 BLUE</option>
+                    <option value="#">💎 RED</option>
+                    <option value="#">💎 WHITE</option>
+                    <option value="#">📩 LETTER</option>
+                    <option value="#">💀 SKULL</option>
+                    <option value="#">👑 CROWN</option>
+                    <option value="#">🪓 Axe (🗡️+1)</option>
+                    <option value="#">🔰 Shield (🛡️+1)</option>
+                    <option value="#">📦 BOX</option>
+                    <option value="#">🧪anti-poison potion</option>
+                    <option value="#">🗝️ Key</option>
+                    <option value="#">⚗️ health potion</option>
+                    <option value="#">🌱 medicinal plant</option>
+                    <option value="#">🌾 medicinal plant</option>
+                    <option value="#">🌿 medicinal plant</option>
+                </select></td>
+                <td> <select name="quest_object1" id="quest_object1">
+                    <option value="#">🎒 Empty</option>
+                    <option value="#">💎 GREEN</option>
+                    <option value="#">💎 BLUE</option>
+                    <option value="#">💎 RED</option>
+                    <option value="#">💎 WHITE</option>
+                    <option value="#">📩 LETTER</option>
+                    <option value="#">💀 SKULL</option>
+                    <option value="#">👑 CROWN</option>
+                    <option value="#">🪓 Axe (🗡️+1)</option>
+                    <option value="#">🔰 Shield (🛡️+1)</option>
+                    <option value="#">📦 BOX</option>
+                    <option value="#">🧪anti-poison potion</option>
+                    <option value="#">🗝️ Key</option>
+                    <option value="#">⚗️ health potion</option>
+                    <option value="#">🌱 medicinal plant</option>
+                    <option value="#">🌾 medicinal plant</option>
+                    <option value="#">🌿 medicinal plant</option>
+                  </select></td>
+                <td align="center"><button onclick="GetRandomButton(1)">Roll🎲</button><input id="ButtonDiceUser" class="input-text-short"><button onclick="GetRandomButton(4)">x</button></td>
+                <!-- <td><button onclick="GetRandomButton(2)">Roll🎲</button><input id="ButtonDiceMonster" type="number" class="input-text-short"><button onclick="GetRandomButton(4)">x</button></td>-->
+                <td><button onclick="GetRandomButton(3)">Roll🎲</button><input id="ButtonDiceMonster2" class="input-text-short"><button onclick="GetRandomButton(4)">x</button></td>
+              <tr>
+              </tr>
+                <td><select name="drop_object1" id="drop_object1">
+                    <option value="#">🎒 Empty</option>
+                    <option value="#">💎 GREEN</option>
+                    <option value="#">💎 BLUE</option>
+                    <option value="#">💎 RED</option>
+                    <option value="#">💎 WHITE</option>
+                    <option value="#">📩 LETTER</option>
+                    <option value="#">💀 SKULL</option>
+                    <option value="#">👑 CROWN</option>
+                    <option value="#">🪓 Axe (🗡️+1)</option>
+                    <option value="#">🔰 Shield (🛡️+1)</option>
+                    <option value="#">📦 BOX</option>
+                    <option value="#">🧪anti-poison potion</option>
+                    <option value="#">🗝️ Key</option>
+                    <option value="#">⚗️ health potion</option>
+                    <option value="#">🌱 medicinal plant</option>
+                    <option value="#">🌾 medicinal plant</option>
+                    <option value="#">🌿 medicinal plant</option>
+                </select></td>
+                <td><select name="quest_object1" id="quest_object1">
+                    <option value="#">🎒 Empty</option>
+                    <option value="#">💎 GREEN</option>
+                    <option value="#">💎 BLUE</option>
+                    <option value="#">💎 RED</option>
+                    <option value="#">💎 WHITE</option>
+                    <option value="#">📩 LETTER</option>
+                    <option value="#">💀 SKULL</option>
+                    <option value="#">👑 CROWN</option>
+                    <option value="#">🪓 Axe (🗡️+1)</option>
+                    <option value="#">🔰 Shield (🛡️+1)</option>
+                    <option value="#">📦 BOX</option>
+                    <option value="#">🧪anti-poison potion</option>
+                    <option value="#">🗝️ Key</option>
+                    <option value="#">⚗️ health potion</option>
+                    <option value="#">🌱 medicinal plant</option>
+                    <option value="#">🌾 medicinal plant</option>
+                    <option value="#">🌿 medicinal plant</option>
+                  </select></td>
+                <td><button onclick="encontrarObjeto()">Uncommon item</button></td>
+                <!-- <td><button onclick="ShowMonster(1)">Generate Monster</button></td>-->
+                <td><button onclick="ShowMonster(2)">Generate Monster</button></td>
+              </tr>             
+              <tr>
+                <td><button class="button" onclick="OpenRoom()">Open room</button></td>
+                <td></td>
+                <td><button class="button" onclick="DoorStatus()">Door status</button></td>
+                <td><button class="button" onclick="ShowHelp()">Show Help</button></td>
+                
+                <!-- <td></td> -->
+              </tr>    
+              <tr>
+                <td><button class="button" onclick="ShowTrap()">Show trap</button></td>
+                <td></td>
+                <td><button class="button" onclick="separator()" >Separator</button></td>
+                <td></td>
+                <!-- <td></td> -->
+              </tr>                         
+        </table>
+
+<table border="1">
+    <tr>
+      <th>Log</th>
+      <th>Anotaciones</th>
+    </tr>
+    <tr>
+      <td>
+          <textarea id="log" class="log" readonly></textarea>
+      </td>
+      <td>
+          <textarea id="notas" class="notas"></textarea>
+      </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td >
+            <button class="button" onclick="">Help</button>
+            <button class="button" onclick="">Your Quest</button>
+            <!--<button class="button" onclick="listarObjetos()">listarObjetos</button>-->
+            <button onclick="SaveState()"> 💾 Save </button>
+            <input type="file" id="load-file" style="display:none" onchange="LoadState(event)">
+            <button onclick="document.getElementById('load-file').click()">Restore</button>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
