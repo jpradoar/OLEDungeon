@@ -36,19 +36,18 @@ function displayText(text) {
     log.scrollTop = log.scrollHeight; // Auto-scroll
 }
 
-function GetRandom(max) {
-    return Math.floor(Math.random() * max) +1; // Genera un número aleatorio entre 1 y max inclusive
+function RamdomNumber1toX(num){
+    return Math.floor(Math.random() * num) +1
 }
+function RamdomNumber0toX(num){
+    return Math.floor(Math.random() * num)
+}
+
 function GetRandomStats(max) {
     return Math.floor(Math.random() * max); // Genera un número aleatorio entre 0 y max inclusive
 }
 
-function roll1dX(max) {
-    let result = Math.floor(Math.random() * max) + 1; // Genera un número aleatorio entre 1 y max inclusive
-    displayText("🎲 (1d" + max + ") = " + result);
-}
-
-function GetRandomButton(owner_number) {
+function RollDiceForrAll(owner_number) {
     ButtonDice = Math.floor(Math.random() * 7); 
 
     if (ButtonDice == 0){
@@ -56,22 +55,35 @@ function GetRandomButton(owner_number) {
     }
     if (owner_number == 1){
       document.getElementById("ButtonDiceUser").value = ButtonDice;
-      displayText("You     = 🗡️ + 🎲("+ButtonDice+") - 🛡️Monster")
+      if (ButtonDice == "Fail"){
+        displayText("You = FAIL")
+      }else{
+        displayText("You = 🗡️ + 🎲("+ButtonDice+") - 🛡️Monster")
+      }
     }
     if (owner_number == 2){
       document.getElementById("ButtonDiceMonster").value = ButtonDice;
-      displayText("Monster = 🗡️ + 🎲("+ButtonDice+") - 🛡️You")
+      if (ButtonDice == "Fail"){
+        displayText("Monster = FAIL")
+      }else{
+        displayText("Monster = 🗡️ + 🎲("+ButtonDice+") - 🛡️You")
+      }      
     }
     if (owner_number == 3){
       document.getElementById("ButtonDiceMonster2").value = ButtonDice;
-      displayText("Monster = 🗡️ + 🎲("+ButtonDice+") - 🛡️You")
+      if (ButtonDice == "Fail"){
+        displayText("Monster = FAIL")
+      }else{
+        displayText("Monster = 🗡️ + 🎲("+ButtonDice+") - 🛡️You")
+      } 
     }    
     if (owner_number == 4){
-      document.getElementById("ButtonDiceUser").value = "-";
-      document.getElementById("ButtonDiceMonster").value = "-";
-      document.getElementById("ButtonDiceMonster2").value = "-";
+      document.getElementById("ButtonDiceUser").value = " ";
+      document.getElementById("ButtonDiceMonster").value = " ";
+      document.getElementById("ButtonDiceMonster2").value = " ";
     }
 }
+
 
 
 function ShowHelp(){ 
@@ -85,46 +97,47 @@ function ShowWelcome(){
 }
 
 
+
 function WhatsOnRoom(){
     let oraculo = [
-      "- Room is empty.",
-      "- Room is empty.",
-      "- Trap",      
-      "- Trap \n- Monster",
-      "- Trap \n- Camp\n- Source",
-      "- Trap \n- Chest",  
-      "- Monster",
-      "- Monster\n- Chest",
-      "- Monster\n- Camp",  
-      "- Monster\n- Source",  
-      "- Monster\n- Sanctuary",
-      "- Source",
-      "- Source",
-      "- Chest",
-      "- Chest",
-      "- Chest",
-      "- Camp",
-      "- Camp\n- Monster", 
-      "- Source\n- Sanctuary",
-      "- Merchant",
-      "- Item",
-      "- Human skeletons",
-      "- Human Remains",
-      "- Animal Bones and Remains",
-    ];
-    displayText("(What's on room): ");
-    displayText(oraculo[GetRandom(oraculo.length)])
-}
+      " - Room is empty.",
+      " - Trap",      
+      " - Trap \n - Monster",
+      " - Trap \n - Camp\n - Source",
+      " - Trap \n - Chest",  
+      " - Monster",
+      " - Monster\n - Chest",
+      " - Monster\n - Camp",  
+      " - Monster\n - Source",  
+      " - Monster\n - Sanctuary",
+      " - Source",
+      " - Source",
+      " - Chest closed",
+      " - Chest closed ",
+      " - Chest",
+      " - Camp",
+      " - Camp\n - Monster", 
+      " - Source\n - Sanctuary",
+      " - Merchant",
+      " - Uncommon Item",
+      " - Nothing special, empty jails",
+      " - Nothing special, human bones",
+      " - Nothing special, animal bones",
+      " - Nothing special, dirt and mess",
 
-function ThingsinRoom(){
-    let oraculo = ["1","2","3"];
-    displayText("(You see): " + oraculo[GetRandom(oraculo.length)] +" things in the room");
+    ];
+    const randomOraculoIndex = Math.floor(Math.random() * oraculo.length);
+    const randomOraculoElement = oraculo[randomOraculoIndex];  
+    displayText("(What's on room): ");
+    displayText(randomOraculoElement)
 }
 
 
 function ShowTrap(){
     let oraculo = ["🕳 hole (-1HP)","🎯 arrow trap (-1HP)","🔪 flying knives (-1HP)"];
-    displayText("(Trap): " + oraculo[GetRandomStats(oraculo.length)]);
+    const randomOraculoIndex = Math.floor(Math.random() * oraculo.length);
+    const randomOraculoElement = oraculo[randomOraculoIndex];     
+    displayText("(Trap): " + randomOraculoElement);
 }
 
 
@@ -140,26 +153,36 @@ function ShowMonster(monster_number){
         "RATS",
         "WOLF",
         ];
-    let m_drop = [
+
+    let MonstersDrop = [
         "🧪anti-poison potion", 
-        "🗝️ Key ", 
+        "🗝️ Room Key ",
+        "🔑 Chest key", 
         "⚗️ health potion",
+        "⚗️ health potion + 🔑 Chest key",
         "🌱 medicinal plant",
         "🌾 medicinal plant",
         "🌿 medicinal plant",
-        "x","x","x","x","x","x","x","x","x","x","x",
+        "🪙 1 coin",
+        "x","x","x","x","x","x","x","x","x","x","x","x",
         ];
-    monster_type = oraculo[GetRandom(oraculo.length)]
-    /*drop = m_drop[GetRandomStats(m_drop.length)];*/
-    monster_hp = GetRandom(6)
-    monster_at = GetRandom(6)
-    monster_df = GetRandom(6)
-    monster_coin = GetRandom(2)
-    monster_exp = GetRandom(5)
-    monster_drop = m_drop[GetRandomStats(m_drop.length)];
 
-    displayText("\n(MONSTER): " + monster_type);
-    displayText("(STATS): |HP:"+ monster_hp+"|AT:"+ monster_at+"|DF:"+ monster_df+"|Coin:"+ monster_coin+"|Exp:"+ monster_exp)
+    const randomOraculoIndex = Math.floor(Math.random() * oraculo.length);
+    const randomOraculoElement = oraculo[randomOraculoIndex];    
+
+    const randomMonstersDropIndex = Math.floor(Math.random() * MonstersDrop.length);
+    const randomMonstersDropElement = MonstersDrop[randomMonstersDropIndex];
+
+    monster_type    = randomOraculoElement
+    monster_hp      = RamdomNumber1toX(6)
+    monster_at      = RamdomNumber1toX(6)
+    monster_df      = RamdomNumber0toX(6) // Defensa real max 5
+    monster_coin    = RamdomNumber0toX(4) // RamdomNumber0toX calcula de 0 a X  Donde X es el numero anterior al (X)
+    monster_exp     = RamdomNumber1toX(5)
+    monster_drop    = randomMonstersDropElement
+
+    //displayText("\n(MONSTER): " + monster_type);
+    displayText("(MONSTER): "+monster_type+"|HP:"+ monster_hp+"|AT:"+ monster_at+"|DF:"+ monster_df+"|Coin:"+ monster_coin+"|Exp:"+ monster_exp)
 
     if (monster_number == 1){
         document.getElementById("monster_type").innerText = monster_type;
@@ -185,7 +208,8 @@ function ShowMonster(monster_number){
         document.getElementById("monster_coin2").value = monster_coin;
         document.getElementById("monster_exp2").value = monster_exp;
         if ( monster_drop != "x"){
-            displayText("|Drop: "+monster_drop)
+            displayText("|Drop: ")
+            displayText("| -"+monster_drop)
             document.getElementById("monster_drop2").value = monster_drop;
         }else{
           document.getElementById("monster_drop2").value = " ";
@@ -204,20 +228,27 @@ function decrementValue(inputId) {
   input.value = parseInt(input.value) - 1;
 }
 
+
 function separator(){ 
     displayText("--------------------------------")
 }
 
+
 function DoorStatus(){ 
     let oraculo = [
-        "is opened",      
-        "is opened",
-        "is opened",
-        "is closed. You need a 🗝️ to open it",
-        ];
-    displayText("(Door): " + oraculo[GetRandomStats(oraculo.length)]);
-
+        "is open",      
+        "is open",
+        "is open",
+        "Closed",
+    ];
+    const randomIndex = Math.floor(Math.random() * oraculo.length); // genero un índice aleatorio
+    const randomElement = oraculo[randomIndex]; // objengo el objeto aleatorio
+    displayText("(Door): " + randomElement); // imprimo el elemento
+    return randomElement;
 }
+
+
+
 
 let objetosUnicosDisponibles = [
     "💎 GREEN (Quest)",
@@ -242,13 +273,18 @@ let objetosUnicosDisponibles = [
     "🪖 (🧥+2) (Uniq)",
     "📜 (InstaKill enemy) - (use=1)",
 ];
+
+function GetRandomStats(max) {
+    return Math.floor(Math.random() * max); // Genera un número aleatorio entre 0 y max inclusive
+}
+
 let objetosUnicosEncontrados = [];
 function encontrarObjeto() {
     if (objetosUnicosDisponibles.length > 0) {
         let index = GetRandomStats(objetosUnicosDisponibles.length);
         let objeto = objetosUnicosDisponibles.splice(index, 1)[0];
         objetosUnicosEncontrados.push(objeto);
-        displayText("(Found item): " + objeto);
+        displayText("(Item): " + objeto);
     } else {
         displayText("No hay más objetos disponibles para encontrar.");
     }
@@ -444,10 +480,20 @@ _  |  _  |  _|  _ | |
  |__________________|
 `,
     ];
-    displayText("(Room opened): " + oraculo[GetRandom(oraculo.length)]);
+    const randomIndex = Math.floor(Math.random() * oraculo.length); // genero un índice aleatorio
+    const randomElement = oraculo[randomIndex]; // objengo el objeto aleatorio
+    displayText("(Room opened): " + randomElement); // imprimo el elemento
     displayText("---------------------------")
-    WhatsOnRoom()
+    if (DoorStatus() == "Closed"){
+         displayText("You need a 🗝️")
+         displayText("If you have one, then discard it")
+         displayText("and open the door.")
+        displayText("(What's in the room)")
+    }else{
+        WhatsOnRoom()
+    }
     displayText("---------------------------")
+    
 }
 
 
@@ -476,6 +522,17 @@ function LoadState(event) {
         document.getElementById("notas").value = state.notas;
     };
     reader.readAsText(file);
+}
+
+
+function ShowHelp(){ 
+    displayText("HELP: ")
+}
+function ShowWelcome(){ 
+    displayText("Once again you, The great Barbarian, have been called to clear the dungeon, kill all monsters and rescue the four magic gems. Go ahead and enter to the dungeon.")
+    displayText("...Good luck!")
+    displayText("---------------------------")
+    displayText(" ")
 }
 
 </script>
@@ -632,7 +689,7 @@ function LoadState(event) {
                     <option value="#">🌾 medicinal plant</option>
                     <option value="#">🌿 medicinal plant</option>
                 </select></td>
-                <td><select name="quest_object1" id="quest_object1">
+                <td><select name="quest_object2" id="quest_object2">
                     <option value="#">🎒 Empty</option>
                     <option value="#">💎 GREEN</option>
                     <option value="#">💎 BLUE</option>
@@ -661,7 +718,7 @@ function LoadState(event) {
                 <td>🎖 <input id="monster_exp2" type="number" class="input-text-short"></td>
               </tr>
               <tr>
-                <td><select name="drop_object1" id="drop_object1">
+                <td><select name="drop_object3" id="drop_object3">
                     <option value="#">🎒 Empty</option>
                     <option value="#">💎 GREEN</option>
                     <option value="#">💎 BLUE</option>
@@ -680,7 +737,7 @@ function LoadState(event) {
                     <option value="#">🌾 medicinal plant</option>
                     <option value="#">🌿 medicinal plant</option>
                 </select></td>
-                <td><select name="quest_object1" id="quest_object1">
+                <td><select name="quest_object4" id="quest_object4">
                     <option value="#">🎒 Empty</option>
                     <option value="#">💎 GREEN</option>
                     <option value="#">💎 BLUE</option>
@@ -704,7 +761,7 @@ function LoadState(event) {
                 <td>🎁<input id="monster_drop2" type="text" class="input-text-long"></td>
               </tr>
               <tr>
-                <td><select name="drop_object1" id="drop_object1">
+                <td><select name="drop_object5" id="drop_object5">
                     <option value="#">🎒 Empty</option>
                     <option value="#">💎 GREEN</option>
                     <option value="#">💎 BLUE</option>
@@ -723,7 +780,7 @@ function LoadState(event) {
                     <option value="#">🌾 medicinal plant</option>
                     <option value="#">🌿 medicinal plant</option>
                 </select></td>
-                <td> <select name="quest_object1" id="quest_object1">
+                <td> <select name="quest_object6" id="quest_object6">
                     <option value="#">🎒 Empty</option>
                     <option value="#">💎 GREEN</option>
                     <option value="#">💎 BLUE</option>
@@ -742,12 +799,12 @@ function LoadState(event) {
                     <option value="#">🌾 medicinal plant</option>
                     <option value="#">🌿 medicinal plant</option>
                   </select></td>
-                <td align="center"><button onclick="GetRandomButton(1)">Roll🎲</button><input id="ButtonDiceUser" class="input-text-short"><button onclick="GetRandomButton(4)">x</button></td>
-                <!-- <td><button onclick="GetRandomButton(2)">Roll🎲</button><input id="ButtonDiceMonster" type="number" class="input-text-short"><button onclick="GetRandomButton(4)">x</button></td>-->
-                <td><button onclick="GetRandomButton(3)">Roll🎲</button><input id="ButtonDiceMonster2" class="input-text-short"><button onclick="GetRandomButton(4)">x</button></td>
+                <td align="center"><button onclick="RollDiceForrAll(1)">Roll🎲</button><input id="ButtonDiceUser" class="input-text-short"><button onclick="RollDiceForrAll(4)">x</button></td>
+                <!-- <td><button onclick="RollDiceForrAll(2)">Roll🎲</button><input id="ButtonDiceMonster" type="number" class="input-text-short"><button onclick="RollDiceForrAll(4)">x</button></td>-->
+                <td><button onclick="RollDiceForrAll(3)">Roll🎲</button><input id="ButtonDiceMonster2" class="input-text-short"><button onclick="RollDiceForrAll(4)">x</button></td>
               <tr>
               </tr>
-                <td><select name="drop_object1" id="drop_object1">
+                <td><select name="drop_object7" id="drop_object7">
                     <option value="#">🎒 Empty</option>
                     <option value="#">💎 GREEN</option>
                     <option value="#">💎 BLUE</option>
@@ -785,26 +842,29 @@ function LoadState(event) {
                     <option value="#">🌾 medicinal plant</option>
                     <option value="#">🌿 medicinal plant</option>
                   </select></td>
-                <td><button onclick="encontrarObjeto()">Uncommon item</button></td>
+                <td></td>
                 <!-- <td><button onclick="ShowMonster(1)">Generate Monster</button></td>-->
                 <td><button onclick="ShowMonster(2)">Generate Monster</button></td>
               </tr>             
               <tr>
                 <td><button class="button" onclick="OpenRoom()">Open room</button></td>
-                <td></td>
-                <td><button class="button" onclick="DoorStatus()">Door status</button></td>
+                <td><button class="button" onclick="WhatsOnRoom()">What's in the room?</button></td>
+                <td><button class="button" onclick="encontrarObjeto()">Uncommon item</button></td>
                 <td><button class="button" onclick="ShowHelp()">Show Help</button></td>
                 
                 <!-- <td></td> -->
               </tr>    
               <tr>
                 <td><button class="button" onclick="ShowTrap()">Show trap</button></td>
-                <td></td>
+                <td>...</td>
+                <td>....</td>
                 <td><button class="button" onclick="separator()" >Separator</button></td>
-                <td></td>
                 <!-- <td></td> -->
               </tr>                         
         </table>
+
+
+ 
 
 <table border="1">
     <tr>
@@ -820,9 +880,10 @@ function LoadState(event) {
       </td>
     </tr>
 </table>
+
 <table>
     <tr>
-        <td >
+        <td>
             <button class="button" onclick="">Help</button>
             <button class="button" onclick="">Your Quest</button>
             <!--<button class="button" onclick="listarObjetos()">listarObjetos</button>-->
@@ -832,5 +893,6 @@ function LoadState(event) {
         </td>
     </tr>
 </table>
+
 </body>
 </html>
